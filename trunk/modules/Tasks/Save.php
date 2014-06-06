@@ -142,17 +142,25 @@ if (!isset($GLOBALS['check_notify'])) {
 $focus->save(false);
 //$return_id = $focus->id;
 
+// Get user to notify
+$notify_user = new User();
+$notify_user->retrieve($focus->assigned_user_id);
+
+// Create content for notification email
+$mailcontent = $focus->create_notification_email($notify_user);
+
 // Create draft email in the email module
 $emailObj = new Email();
-$emailObj->to_addrs= '';
+$emailObj->to_addrs= $notify_user->emailAddress->getPrimaryAddress($notify_user);
 $emailObj->type= 'draft';
 $emailObj->deleted = '0';
-$emailObj->name = "TO BE DEFINED";
-$emailObj->description = "TO BE DEFINED";
+$emailObj->name = $mailcontent->Subject;
+$emailObj->description = $mailcontent->Body;
 $emailObj->description_html = null;
-$emailObj->from_addr = "TO BE DEFINED";
+$emailObj->from_addr = $admin->settings['notify_fromaddress'];
 $emailObj->parent_type = "Tasks";
 $emailObj->parent_id = $focus->id;
+$emailObj->assigned_user_id = '1';
 $emailObj->modified_user_id = '1';
 $emailObj->created_by = '1';
 $emailObj->status = 'draft';
@@ -160,6 +168,10 @@ $emailObj->save();
 
 // Set return id
 $return_id = $emailObj->id;
+
+// Go to Mail
+header("Location: index.php?&module=Emails&action=DetailView&record=$return_id");
+exit();
 
 if(!empty($_POST['is_ajax_call']))
 {
