@@ -151,15 +151,18 @@ $mailcontent = $focus->create_notification_email($notify_user);
 
 // Create draft email in the email module
 $emailObj = new Email();
-$emailObj->to_addrs= $notify_user->emailAddress->getPrimaryAddress($notify_user);
-$emailObj->type= 'draft';
+$emailObj->to_addrs = $notify_user->emailAddress->getPrimaryAddress($notify_user);
+$emailObj->to_addrs_names = $notify_user->emailAddress->getPrimaryAddress($notify_user);
+$emailObj->to_addrs_ids = $notify_user->id;
+$emailObj->type = 'draft';
 $emailObj->deleted = '0';
 $emailObj->name = $mailcontent->Subject;
 $emailObj->description = $mailcontent->Body;
-$emailObj->description_html = null;
+$emailObj->description_html = nl2br($mailcontent->Body);
 $emailObj->from_addr = $admin->settings['notify_fromaddress'];
 $emailObj->parent_type = "Tasks";
 $emailObj->parent_id = $focus->id;
+$emailObj->parent_name = $focus->name;
 $emailObj->assigned_user_id = '1';
 $emailObj->modified_user_id = '1';
 $emailObj->created_by = '1';
@@ -170,7 +173,7 @@ $emailObj->save();
 $return_id = $emailObj->id;
 
 // Go to Mail
-header("Location: index.php?&module=Emails&action=DetailView&record=$return_id");
+header("Location: index.php?&module=Emails&action=Compose&replyForward=true&record=$return_id");
 exit();
 
 if(!empty($_POST['is_ajax_call']))
