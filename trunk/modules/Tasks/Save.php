@@ -138,6 +138,10 @@ if (!isset($GLOBALS['check_notify'])) {
 	$GLOBALS['check_notify'] = false;
 }
 
+// Get Admin variables
+$admin = new Administration();
+$admin->retrieveSettings();
+
 // Save without standard email notification
 $focus->save(false);
 //$return_id = $focus->id;
@@ -145,6 +149,11 @@ $focus->save(false);
 // Get user to notify
 $notify_user = new User();
 $notify_user->retrieve($focus->assigned_user_id);
+
+// Set assigned user name
+if((!isset($focus->new_assigned_user_name))||(empty($focus->new_assigned_user_name))) {
+  $focus->new_assigned_user_name = $notify_user->full_name;
+  };
 
 // Create content for notification email
 $mailcontent = $focus->create_notification_email($notify_user);
