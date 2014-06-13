@@ -17,7 +17,7 @@ array (
           1 => 'CANCEL',
           2 => 
           array (
-            'customCode' => '<input id="SendEmailButton" title="Send Email" class="button" type="button" name="SendEmailButton" value="Send Email" onclick="var _form = document.getElementById(\'EditView\'); _form.action.value = \'SendEmail\'; SUGAR.ajaxUI.submitForm(_form);return false;">',
+            'customCode' => '<input id="SendEmailButton" title="Send Email" class="button" type="button" name="SendEmailButton" value="Send Email" onclick="var _form = document.getElementById(\'EditView\'); _form.action.value = \'SendEmail\'; check_form(\'EditView\'); SUGAR.ajaxUI.submitForm(_form);return false;">',
           ),
         ),
       ),
