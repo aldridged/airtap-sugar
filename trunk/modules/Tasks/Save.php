@@ -139,13 +139,14 @@ if (!isset($GLOBALS['check_notify'])) {
 }
 
 // Get Admin variables
-$admin = new Administration();
-$admin->retrieveSettings();
+//$admin = new Administration();
+//$admin->retrieveSettings();
 
 // Save without standard email notification
 $focus->save(false);
-//$return_id = $focus->id;
+$return_id = $focus->id;
 
+/*
 // Get user to notify
 $notify_user = new User();
 $notify_user->retrieve($focus->assigned_user_id);
@@ -187,6 +188,7 @@ $return_id = $emailObj->id;
 // Go to Mail
 header("Location: index.php?&module=Emails&action=Compose&replyForward=true&record=$return_id");
 exit();
+*/
 
 if(!empty($_POST['is_ajax_call']))
 {
