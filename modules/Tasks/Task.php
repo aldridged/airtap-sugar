@@ -342,6 +342,14 @@ class Task extends SugarBean {
 		$xtpl->assign("TASK_DESCRIPTION", $task->description);
 		
 		//Custom Additions
+		$lcase = new aCase();
+		$lproject = new Project();
+		$lcase->retrieve($task->parent_id);
+		$linkedprojects = $lcase->get_linked_beans('project','Project');
+		foreach($linkedprojects as $curproj) { $lproject = $curproj; };
+		$lproject->custom_fields->retrieve();
+		$xtpl->assign("TASK_PROJECT_NAME", (isset($lproject->name)?$lproject->name:""));
+		$xtpl->assign("TASK_PROJECT_FACILITY", (isset($lproject->facility_c)?$lproject->facility_c:""));
 		$xtpl->assign("TASK_JOBNUMBER", (isset($task->jobnumber_c)?$task->jobnumber_c:""));
 		$xtpl->assign("TASK_DEPARTMENT", (isset($task->department_c)?$app_list_strings['department_list'][$task->department_c]:""));
 		$xtpl->assign("TASK_TYPE", (isset($task->type_c)?$app_list_strings['Task_Type_list'][$task->type_c]:""));
@@ -351,6 +359,7 @@ class Task extends SugarBean {
 		$xtpl->assign("TASK_DOCKHELIPORTLOCATION", (isset($task->dockheliportlocation_c)?$task->dockheliportlocation_c:""));
 		$xtpl->assign("TASK_VESSELNAME", (isset($task->vesselname_c)?$task->vesselname_c:""));
 		$xtpl->assign("TASK_ACCOUNT", (isset($task->account_c)?$task->account_c:""));
+		$xtpl->assign("TASK_WORKLOG", (isset($task->worklog_c)?$task->worklog_c:""));
 
 		return $xtpl;
 	}
