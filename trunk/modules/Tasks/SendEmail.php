@@ -90,8 +90,9 @@ $emailObj = new Email();
 $emailObj->to_addrs = $notify_user->emailAddress->getPrimaryAddress($notify_user);
 $emailObj->to_addrs_names = $notify_user->emailAddress->getPrimaryAddress($notify_user);
 $emailObj->to_addrs_ids = $notify_user->id;
-$emailObj->cc_addrs = "support@airtap.com";
-$emailObj->cc_addrs_names = "support@airtap.com";
+$emailObj->cc_addrs = array("support@airtap.com");
+$emailObj->cc_addrs_names = array("support@airtap.com");
+$emailObj->cc_addrs_emails = array("blah");
 $emailObj->cc_addrs_ids = '1';
 $emailObj->type = 'draft';
 $emailObj->deleted = '0';
@@ -113,6 +114,8 @@ $return_id = $emailObj->id;
 
 // Go to Mail
 header("Location: index.php?module=Emails&action=Compose&replyForward=true&record=$return_id");
+//header("Location: index.php?module=Emails&action=EmailUI&to_pdf=true&emailUIAction=getSingleMessageFromSugar&mbox=sugar::Emails&uid=$return_id");
+//header("Location: index.php?action=EditView&type=out&module=Emails&record=$return_id");
 exit();
 
 if(!empty($_POST['is_ajax_call']))
