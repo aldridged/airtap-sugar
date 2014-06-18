@@ -324,8 +324,6 @@ class Task extends SugarBean {
 		global $app_list_strings;
         global $timedate;
 		$task->custom_fields->retrieve();
-		$notifyAccount = new Account();
-		if(isset($task->account_c)) {$notifyAccount->retrieve($task->account_c);};
         $notifyUser = $task->current_notify_user;
         $prefDate = $notifyUser->getUserDateTimePreferences();
 		$xtpl->assign("TASK_SUBJECT", $task->name);
@@ -352,7 +350,7 @@ class Task extends SugarBean {
 		$xtpl->assign("TASK_PARTSSPARESNEEDED", (isset($task->partssparesneeded_c)?$task->partssparesneeded_c:""));
 		$xtpl->assign("TASK_DOCKHELIPORTLOCATION", (isset($task->dockheliportlocation_c)?$task->dockheliportlocation_c:""));
 		$xtpl->assign("TASK_VESSELNAME", (isset($task->vesselname_c)?$task->vesselname_c:""));
-		$xtpl->assign("TASK_ACCOUNT", $notifyAccount->name);
+		$xtpl->assign("TASK_ACCOUNT", (isset($task->account_c)?$task->account_c:""));
 
 		return $xtpl;
 	}
