@@ -31,3 +31,10 @@ $dictionary["d8753_rentalitem"]["fields"]["d8753_rentalitem_projectproject_ida"]
   'side' => 'right',
   'vname' => 'LBL_D8753_RENTALITEM_PROJECT_FROM_D8753_RENTALITEM_TITLE',
 );
+$dictionary["d8753_rentalitem"]["fields"]["d8753_rentalitem_notice_c"] = array (
+  'name' => 'rentalitem_notice_c',
+  'vname' => 'LBL_RENTALITEM_NOTICE_C',
+  'type' => 'varchar',
+  'len' => '255',
+  'source' => 'non-db',
+);
