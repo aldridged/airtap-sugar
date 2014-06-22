@@ -11,4 +11,11 @@ $hook_array['after_save'][] = Array(
     'rentalitemsHooks',
     'after_save_hook'
 );
+$hook_array['process_record'][] = Array(
+    1,
+    'checkJobs',
+    'custom/modules/d8753_rentalitem/logic_hooks/rentalitemsHooks.php',
+    'rentalitemsHooks',
+    'process_record_hook'
+);
 ?>
