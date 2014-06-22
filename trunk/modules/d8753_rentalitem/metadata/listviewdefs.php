@@ -56,6 +56,7 @@ array (
     'sortable' => false,
     'width' => '10%',
     'default' => false,
+	'customCode' => '{$RENTALITEMS_NOTICE_C}{$DESCRIPTION}',
   ),
 );
 ?>
