@@ -16,5 +16,15 @@ class rentalitemsHooks{
 		  };
 		};
     }
+	
+	function process_record_hook(&$bean, $event, $arguments){
+	  $bean->rentalitem_notice_c = '';
+	  $full_copy = new d8753_rentalitem();
+	  $full_copy->retrieve($bean->id);
+	  $linked_jobs = $full_copy->get_linked_beans('d8753_rentalitem_project','Project');
+	  if(count($linked_jobs)>1) {
+	    $bean->rentalitem_notice_c = '&lt;span title="Linked to more than one Job" style="color:#FF0000;"&gt;&#x26A0;&lt;/span&gt;';
+		};
+	}
 }
 ?>
