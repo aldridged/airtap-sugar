@@ -69,6 +69,7 @@ $subpanel_layout['list_fields'] = array (
     'studio' => 'visible',
     'vname' => 'LBL_STATUS',
     'width' => '7%',
+	'customCode' => '{$RENTALITEMS_NOTICE_C}{$STATUS}',
   ),
   'description' => 
   array (
