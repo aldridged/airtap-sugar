@@ -12,12 +12,8 @@ $layout_defs["Project"]["subpanel_setup"]['d8753_rentalitem_project'] = array (
   array (
     0 => 
     array (
-      'widget_class' => 'SubPanelTopButtonQuickCreate',
-    ),
-    1 => 
-    array (
-      'widget_class' => 'SubPanelTopSelectButton',
-      'mode' => 'MultiSelect',
+      'widget_class' => 'SubPanelTopCreateButton',
     ),
   ),
 );
+?>
