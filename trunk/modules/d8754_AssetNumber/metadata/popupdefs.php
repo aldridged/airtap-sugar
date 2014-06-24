@@ -54,7 +54,7 @@ $popupMeta = array (
     'label' => 'LBL_STATUS',
     'width' => '10%',
     'name' => 'status',
-	'customCode' => '{$ASSETNUMBER_NOTICE_C}{$STATUS}',
+	'customCode' => '{$STATUS}{$D8754_ASSETNUMBER_NOTICE_C}',
   ),
   'D8754_ASSETTYPE_D8754_ASSETNUMBER_NAME' => 
   array (
