@@ -18,4 +18,3 @@ $dictionary["d8754_AssetNumber"]["fields"]["d8754_assetnumber_notice_c"] = array
  'len' => '255',
  'source' => 'non-db',
 );
-?>
