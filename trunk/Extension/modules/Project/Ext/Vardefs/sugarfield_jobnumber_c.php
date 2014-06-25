@@ -1,5 +1,5 @@
 <?php
- // created: 2014-06-25 11:49:43
+ // created: 2014-05-29 09:58:12
 $dictionary['Project']['fields']['jobnumber_c']['labelValue']='Job Number';
-
+$dictionary['Project']['fields']['jobnumber_c']['type']='int';
  ?>
