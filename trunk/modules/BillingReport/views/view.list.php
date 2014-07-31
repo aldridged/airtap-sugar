@@ -117,6 +117,27 @@ EOHTML;
 			//Loop over projects (by account)
 			foreach($blprojs as $curproj) {
 				if($curproj->deleted==1) { continue; };
+				
+				//Filter Jobs on time period
+				$startdateunix = strtotime($start_date_val);
+				$stopdateunix = strtotime($stop_date_val);
+				$projstartdateunix = strtotime($curproj->estimated_start_date);
+				$projstopdateunix = strtotime($curproj->estimated_stop_date);
+					
+				//Item start date beyond the timeframe we are looking at
+				if(($projstartdateunix!=FALSE)&&($stopdateunix!=FALSE)) {
+				  if($projstartdateunix>$stopdateunix) {
+				    continue;
+					};
+				  };
+					  
+				//Item stop date before the timeframe we are looking at
+				if(($projstopdateunix!=FALSE)&&($startdateunix!=FALSE)) {
+				  if($projstopdateunix<$startdateunix) {
+				    continue;
+					};
+				  };
+					  
 				$blri = $curproj->get_linked_beans('d8753_rentalitem_project','d8753_rentalitem');
 				$curproj->custom_fields->retrieve();
 				$outproj .= "\t".$curproj->jobnumber_c.",";
@@ -137,25 +158,7 @@ EOHTML;
 				//Loop over rental items (by project) skipping those whose stop date is before the specified start date or whose start date is after the specified stop date
 				foreach($blri as $curri) {
 					if($curri->deleted==1) { continue; };
-					$startdateunix = strtotime($start_date_val);
-					$stopdateunix = strtotime($stop_date_val);
-					$ristartdateunix = strtotime($curri->startdate);
-					$ristopdateunix = strtotime($curri->stopdate);
-					
-					//Item start date beyond the timeframe we are looking at
-					if(($ristartdateunix!=FALSE)&&($stopdateunix!=FALSE)) {
-					  if($ristartdateunix>$stopdateunix) {
-					    continue;
-						};
-					  };
-					  
-					//Item stop date before the timeframe we are looking at
-					if(($ristopdateunix!=FALSE)&&($startdateunix!=FALSE)) {
-					  if($ristopdate<$startdateunix) {
-					    continue;
-						};
-					  };
-					
+										
 					$blat = $curri->get_linked_beans('d8754_assettype_d8753_rentalitem_1','d8754_AssetType');
 					$blan = $curri->get_linked_beans('d8754_assetnumber_d8753_rentalitem_1','d8754_AssetNumber');
 					
