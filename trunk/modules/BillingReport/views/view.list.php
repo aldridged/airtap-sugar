@@ -1,5 +1,4 @@
 <?php
-//
 require_once('include/MVC/View/views/view.list.php');
 require_once('custom/include/phpexcel/PHPExcel.php');
 
@@ -112,6 +111,13 @@ EOHTML;
 			$curacct->custom_fields->retrieve();
 			echo $curacct->name."\n";
 			//if(count($blprojs)==0) echo "\t!! NO JOBS !!\n";
+			
+			//If download, create a row for the account
+			if($download==1) {
+					  $excelreport->getActiveSheet()->setCellValue("A".$i,$curacct->name);
+					  $i++;
+					  };
+			
 			$outproj = "";
 			$records = 0;
   
@@ -154,6 +160,22 @@ EOHTML;
 				
 				//if(count($blri)==0) echo "\t\t!! NO RENTAL ITEMS !!\n";
 				
+				//If download, create a row for the account
+				if($download==1) {
+					  $i++;
+					  $excelreport->getActiveSheet()->setCellValue("B".$i,$curproj->jobnumber_c)
+								->setCellValue("C".$i,$curproj->name)
+								->setCellValue("D".$i,$curproj->facility_c)
+								->setCellValue("E".$i,str_replace("\r\n",";",$curproj->description))
+								->setCellValue("F".$i,$curproj->well_c)
+								->setCellValue("G".$i,$curproj->afe_c)
+								->setCellValue("H".$i,$curproj->ocsgstate_c)
+								->setCellValue("I".$i,$curproj->estimated_start_date)
+								->setCellValue("J".$i,$curproj->estimated_end_date)
+								->setCellValue("K".$i,$curproj->status);
+					  $i++;
+					  };
+				
 				$outri = "";
 	
 				//Loop over rental items (by project) skipping those whose stop date is before the specified start date or whose start date is after the specified stop date
@@ -175,18 +197,7 @@ EOHTML;
 					
 					//If this is a download add a row
 					if($download==1) {
-					  $excelreport->getActiveSheet()->setCellValue("A".$i,$curacct->name)
-                                ->setCellValue("B".$i,$curproj->jobnumber_c)
-								->setCellValue("C".$i,$curproj->name)
-								->setCellValue("D".$i,$curproj->facility_c)
-								->setCellValue("E".$i,str_replace("\r\n",";",$curproj->description))
-								->setCellValue("F".$i,$curproj->well_c)
-								->setCellValue("G".$i,$curproj->afe_c)
-								->setCellValue("H".$i,$curproj->ocsgstate_c)
-								->setCellValue("I".$i,$curproj->estimated_start_date)
-								->setCellValue("J".$i,$curproj->estimated_end_date)
-								->setCellValue("K".$i,$curproj->status)
-								->setCellValue("L".$i,$blat[0]->name)
+					  $excelreport->getActiveSheet()->setCellValue("L".$i,$blat[0]->name)
 								->setCellValue("M".$i,$blan[0]->name)
 								->setCellValue("N".$i,$curri->rate)
 								->setCellValue("O".$i,$curri->term)
@@ -204,6 +215,7 @@ EOHTML;
 				$outproj = "";
 				};
 			if($records==0) { echo "NO RECORDS RETURNED\n\n"; };
+			$i++;
 			};
 		echo '</pre>';
 		
