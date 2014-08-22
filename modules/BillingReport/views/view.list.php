@@ -17,6 +17,8 @@ class BillingReportViewList extends SugarView{
 		else { $stop_date_val = ""; };
 		if(isset($_GET['acct_name'])) { $acct_name_val = $_GET['acct_name']; }
 		else { $acct_name_val = ""; };
+		if(isset($_GET['pre_bill'])) { $prebill_val = $_GET['pre_bill']; }
+		else { $prebill_val = ""; };
 		if(isset($_GET['download'])) { $download = 1; }
 		else { $download = 0;}
 		
@@ -34,29 +36,28 @@ class BillingReportViewList extends SugarView{
 							
 		  $excelreport->setActiveSheetIndex(0)
                         ->setCellValue('A1', 'Account')
-                        ->setCellValue('B1', 'JobNumber')
-                        ->setCellValue('C1', 'JobName')
-						->setCellValue('D1', 'Facility')
-						->setCellValue('E1', 'Description')
-                        ->setCellValue('F1', 'Well')
-                        ->setCellValue('G1', 'AFE')
-                        ->setCellValue('H1', 'OCSGState')
-						->setCellValue('I1', 'JobStartDate')
-                        ->setCellValue('J1', 'JobEndDate')
-						->setCellValue('K1', 'JobStatus')
-						->setCellValue('L1', 'AssetType')
-						->setCellValue('M1', 'AssetNumber')
-						->setCellValue('N1', 'RentalItemRate')
-						->setCellValue('O1', 'RentalTerm')
-						->setCellValue('P1', 'RentalItemStartDate')
-						->setCellValue('Q1', 'RentalItemTaxable')
-						->setCellValue('R1', 'RentalItemStatus')
-						->setCellValue('S1', 'RentalItemStopDate');
+                        ->setCellValue('A2', 'JobNumber')
+                        ->setCellValue('B2', 'JobName')
+						->setCellValue('C2', 'Facility')
+                        ->setCellValue('D2', 'Well')
+                        ->setCellValue('E2', 'AFE')
+                        ->setCellValue('F2', 'OCSGState')
+						->setCellValue('G2', 'JobStartDate')
+                        ->setCellValue('H2', 'JobEndDate')
+						->setCellValue('I2', 'JobStatus')
+						->setCellValue('A3', 'AssetType')
+						->setCellValue('B3', 'AssetNumber')
+						->setCellValue('C3', 'RentalItemRate')
+						->setCellValue('D3', 'RentalTerm')
+						->setCellValue('E3', 'RentalItemStartDate')
+						->setCellValue('F3', 'RentalItemStopDate')
+						->setCellValue('G3', 'RentalItemStatus')
+						->setCellValue('H3', 'RentalItemTaxable');
                        
 		  $excelreport->getActiveSheet()->setTitle('Billing Report');
 		  
-		  //Set to write from line 2
-		  $i = 2;
+		  //Set to write from line 5
+		  $i = 5;
 		  };
 		
 		global $timedate;
@@ -81,16 +82,19 @@ Calendar.setup ({
 </script>
 EOHTML;
 		$str_act = "<input type='text' size='20' value='$acct_name_val' name='acct_name'>";
+		$str_prebill = "<input type='checkbox' value='checked' name='pre_bill'";
+		if($prebill_val!="") { $str_prebill .= " checked>"; }
+		else { $str_prebill .= " >"; };
 		echo "<form action='index.php?module=BillingReport' method='GET'>";
 		echo "<input type=hidden name='module' value='BillingReport'>";
-		echo "Start Date: ".$str_start." &nbsp; Stop Date:".$str_stop." &nbsp; Account:".$str_act." &nbsp; <input type=submit value='Generate' name=generate>";
+		echo "Start Date: ".$str_start." &nbsp; Stop Date:".$str_stop." &nbsp; Account:".$str_act." &nbsp; PreBill?:".$str_prebill." &nbsp; <input type=submit value='Generate' name=generate>";
 		echo "&nbsp; <input type=submit value='Download' name=download>";
 		echo "</form>";
 		echo "<hr/>";
 		
 		// Output section
         echo '<pre>';
-		echo "Account\n\tJobNumber,JobName,Facility,Description,Well,AFE,OCSGState,EstStartDate,EstEndDate,JobStatus\n\t\tAssetType,AssetNumber,RentalItemRate,RentalItemTerm,RentalItemStartDate,RentalItemTaxable,RentalItemStatus,RentalItemStopDate\n";
+		echo "Account\n\tJobNumber,JobName,Facility,Well,AFE,OCSGState,EstStartDate,EstEndDate,JobStatus\n\t\tAssetType,AssetNumber,RentalItemRate,RentalItemTerm,RentalItemStartDate,RentalItemTaxable,RentalItemStatus,RentalItemStopDate\n";
 		
 		//Retrieve Billing Accounts
         $oacct = new Account();
@@ -101,6 +105,7 @@ EOHTML;
 		//Loop over accounts skipping those that do not match if acct name specified 
 		foreach($blaccts as $curacct) {
 			if($curacct->deleted==1) { continue; };
+			if(substr($curacct->name,0,7)=="Tampnet") { continue; };  //Skip local jobs
 			if($acct_name_val!="") {
 			  if(substr($curacct->name,0,strlen($acct_name_val))!=$acct_name_val) {
 			    continue;
@@ -115,6 +120,7 @@ EOHTML;
 			//If download, create a row for the account
 			if($download==1) {
 					  $excelreport->getActiveSheet()->setCellValue("A".$i,$curacct->name);
+					  $excelreport->getActiveSheet()->getStyle('A'.$i)->getFont()->setBold(true);
 					  $i++;
 					  };
 			
@@ -123,6 +129,7 @@ EOHTML;
   
 			//Loop over projects (by account)
 			foreach($blprojs as $curproj) {
+				//Filter deleted records
 				if($curproj->deleted==1) { continue; };
 				
 				//Filter Jobs on time period
@@ -147,10 +154,15 @@ EOHTML;
 					  
 				$blri = $curproj->get_linked_beans('d8753_rentalitem_project','d8753_rentalitem');
 				$curproj->custom_fields->retrieve();
+				
+				//Filter on prebill
+				if(($curproj->prebill_c==1)&&($prebill_val!="checked")) { continue; };
+				if(($curproj->prebill_c==0)&&($prebill_val=="checked")) { continue; };
+				
 				$outproj .= "\t".$curproj->jobnumber_c.",";
 				$outproj .= '"'.$curproj->name.'",';
 				$outproj .= '"'.$curproj->facility_c.'",';
-				$outproj .= '"'.str_replace("\r\n",";",$curproj->description).'",';
+				//$outproj .= '"'.str_replace("\r\n",";",$curproj->description).'",';
 				$outproj .= '"'.$curproj->well_c.'",';
 				$outproj .= '"'.$curproj->afe_c.'",';
 				$outproj .= '"'.$curproj->ocsgstate_c.'",';
@@ -163,16 +175,16 @@ EOHTML;
 				//If download, create a row for the account
 				if($download==1) {
 					  $i++;
-					  $excelreport->getActiveSheet()->setCellValue("B".$i,$curproj->jobnumber_c)
-								->setCellValue("C".$i,$curproj->name)
-								->setCellValue("D".$i,$curproj->facility_c)
-								->setCellValue("E".$i,str_replace("\r\n",";",$curproj->description))
-								->setCellValue("F".$i,$curproj->well_c)
-								->setCellValue("G".$i,$curproj->afe_c)
-								->setCellValue("H".$i,$curproj->ocsgstate_c)
-								->setCellValue("I".$i,$curproj->estimated_start_date)
-								->setCellValue("J".$i,$curproj->estimated_end_date)
-								->setCellValue("K".$i,$curproj->status);
+					  $excelreport->getActiveSheet()->setCellValue("A".$i,$curproj->jobnumber_c)
+								->setCellValue("B".$i,$curproj->name)
+								->setCellValue("C".$i,$curproj->facility_c)
+								->setCellValue("D".$i,$curproj->well_c)
+								->setCellValue("E".$i,$curproj->afe_c)
+								->setCellValue("F".$i,$curproj->ocsgstate_c)
+								->setCellValue("G".$i,$curproj->estimated_start_date)
+								->setCellValue("H".$i,$curproj->estimated_end_date)
+								->setCellValue("I".$i,$curproj->status);
+					  $excelreport->getActiveSheet()->getStyle('A'.$i.':I'.$i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 					  $i++;
 					  };
 				
@@ -190,21 +202,22 @@ EOHTML;
 					$outri .= $curri->rate.",";
 					$outri .= $curri->term.",";
 					$outri .= $curri->startdate.",";
-					$outri .= $curri->taxable.",";
+					$outri .= $curri->stopdate.",";
 					$outri .= $curri->status.",";
-					$outri .= $curri->stopdate;
+					$outri .= $curri->taxable;
 					$outri .= "\n";
 					
 					//If this is a download add a row
 					if($download==1) {
-					  $excelreport->getActiveSheet()->setCellValue("L".$i,$blat[0]->name)
-								->setCellValue("M".$i,$blan[0]->name)
-								->setCellValue("N".$i,$curri->rate)
-								->setCellValue("O".$i,$curri->term)
-								->setCellValue("P".$i,$curri->startdate)
-								->setCellValue("Q".$i,$curri->taxable)
-								->setCellValue("R".$i,$curri->status)
-								->setCellValue("S".$i,$curri->stopdate);
+					  $excelreport->getActiveSheet()->setCellValue("A".$i,$blat[0]->name)
+								->setCellValue("B".$i,$blan[0]->name)
+								->setCellValue("C".$i,$curri->rate)
+								->setCellValue("D".$i,$curri->term)
+								->setCellValue("E".$i,$curri->startdate)
+								->setCellValue("F".$i,$curri->stopdate)
+								->setCellValue("G".$i,$curri->status)
+								->setCellValue("H".$i,$curri->taxable);
+					  $excelreport->getActiveSheet()->getStyle('A'.$i.':I'.$i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 					  $i++;
 					  };
 					};
@@ -230,20 +243,18 @@ EOHTML;
 		  $excelreport->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
 		  $excelreport->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
 		  $excelreport->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
-		  $excelreport->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
-		  $excelreport->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
-		  $excelreport->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
-		  $excelreport->getActiveSheet()->getColumnDimension('M')->setAutoSize(true);
-		  $excelreport->getActiveSheet()->getColumnDimension('N')->setAutoSize(true);
-		  $excelreport->getActiveSheet()->getColumnDimension('O')->setAutoSize(true);
-		  $excelreport->getActiveSheet()->getColumnDimension('P')->setAutoSize(true);
-		  $excelreport->getActiveSheet()->getColumnDimension('Q')->setAutoSize(true);
-		  $excelreport->getActiveSheet()->getColumnDimension('R')->setAutoSize(true);
-		  $excelreport->getActiveSheet()->getColumnDimension('S')->setAutoSize(true);
-
+		  
 		  // Set Formatting on Sheet
-		  $excelreport->getActiveSheet()->getStyle('A1:S1')->getFont()->setBold(true);
-		  $excelreport->getActiveSheet()->getStyle('A1:S1')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THICK);
+		  $excelreport->getActiveSheet()->getStyle('A1:I1')->getFont()->setBold(true);
+		  $excelreport->getActiveSheet()->getStyle('A1:I1')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THICK);
+		  $excelreport->getActiveSheet()->freezePane('A1');
+		  $excelreport->getActiveSheet()->getStyle('A2:I2')->getFont()->setBold(true);
+		  $excelreport->getActiveSheet()->getStyle('A2:I2')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THICK);
+		  $excelreport->getActiveSheet()->freezePane('A2');
+		  $excelreport->getActiveSheet()->getStyle('A3:I3')->getFont()->setBold(true);
+		  $excelreport->getActiveSheet()->getStyle('A3:I3')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THICK);
+		  $excelreport->getActiveSheet()->freezePane('A3');
+		  $excelreport->getActiveSheet()->freezePane('A4');
 
 		  // Write it out to the browser
 		  $objWriter = PHPExcel_IOFactory::createWriter($excelreport, 'Excel5');
