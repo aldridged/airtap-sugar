@@ -136,7 +136,7 @@ EOHTML;
 				$startdateunix = strtotime($start_date_val);
 				$stopdateunix = strtotime($stop_date_val);
 				$projstartdateunix = strtotime($curproj->estimated_start_date);
-				$projstopdateunix = strtotime($curproj->estimated_stop_date);
+				$projstopdateunix = strtotime($curproj->estimated_end_date);
 					
 				//Item start date beyond the timeframe we are looking at
 				if(($projstartdateunix!=FALSE)&&($stopdateunix!=FALSE)) {
