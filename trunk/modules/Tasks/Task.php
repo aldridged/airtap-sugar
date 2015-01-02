@@ -351,6 +351,7 @@ class Task extends SugarBean {
 		$xtpl->assign("TASK_PROJECT_NAME", (isset($lproject->name)?$lproject->name:""));
 		$xtpl->assign("TASK_PROJECT_FACILITY", (isset($lproject->facility_c)?$lproject->facility_c:""));
 		$xtpl->assign("TASK_JOBNUMBER", (isset($task->jobnumber_c)?$task->jobnumber_c:""));
+		$xtpl->assign("TASK_CASENUMBER", (isset($lcase->case_number)?$lcase->case_number:""));
 		$xtpl->assign("TASK_DEPARTMENT", (isset($task->department_c)?$app_list_strings['department_list'][$task->department_c]:""));
 		$xtpl->assign("TASK_TYPE", (isset($task->type_c)?$app_list_strings['Task_Type_list'][$task->type_c]:""));
 		$xtpl->assign("TASK_CONTACTNAME", (isset($task->contactname_c)?$task->contactname_c:""));
