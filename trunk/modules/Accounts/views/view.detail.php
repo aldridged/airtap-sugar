@@ -1,5 +1,6 @@
 <?php
 // custom/modules/Accounts/views/view.detail.php - hide Activities, Project Tasks, Tasks
+// dta 1/19/15 - re enable activities
 
     if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
    
@@ -27,7 +28,6 @@
    
                     //Subpanels to hide
                     $hideSubpanels=array(
-                        'activities',
                         'projecttask',
                         'tasks'
                     );
