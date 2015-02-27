@@ -4,7 +4,7 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 require_once('modules/SugarFeed/feedLogicBase.php');
 
 
-class TasksFeed extends FeedLogicBase{
+class TaskFeed extends FeedLogicBase{
 	var $module = 'Tasks';
 	function pushFeed($bean, $event, $arguments){
 		global $locale;
