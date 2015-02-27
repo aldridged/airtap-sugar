@@ -124,7 +124,11 @@ array (
         ),
         2 => 
         array (
-          0 => '',
+          0 => 
+          array (
+            'name' => 'parent_name',
+            'customLabel' => '{sugar_translate label=\'LBL_MODULE_NAME\' module=$fields.parent_type.value}',
+          ),
           1 => 
           array (
             'name' => 'assigned_user_name',
@@ -133,37 +137,38 @@ array (
         ),
         3 => 
         array (
-          0 => '',
-          1 => 'priority',
+          0 => 'date_start',
+          1 => 'date_due',
         ),
         4 => 
         array (
-          0 => '',
-          1 => 'status',
+          0 => 
+          array (
+            'name' => 'date_stop_c',
+            'label' => 'LBL_DATE_STOP',
+          ),
+          1 => 'priority',
         ),
         5 => 
         array (
-          0 => 
-          array (
-            'name' => 'parent_name',
-            'customLabel' => '{sugar_translate label=\'LBL_MODULE_NAME\' module=$fields.parent_type.value}',
-          ),
-          1 => 'date_due',
+          1 => 'status',
         ),
         6 => 
         array (
-          0 => '',
-          1 => 'date_start',
-        ),
-        7 => 
-        array (
-          0 => '',
-          1 => 
+          0 => 
           array (
             'name' => 'type_c',
             'studio' => 'visible',
             'label' => 'LBL_TYPE',
           ),
+          1 => 
+          array (
+            'name' => 'fwt_c',
+            'label' => 'LBL_FWT',
+          ),
+        ),
+        7 => 
+        array (
         ),
         8 => 
         array (

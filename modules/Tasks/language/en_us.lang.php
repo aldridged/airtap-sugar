@@ -1,5 +1,28 @@
 <?php
-// created: 2014-05-22 22:11:34
+// created: 2015-01-26 16:24:33
 $mod_strings = array (
   'LBL_PROJECTS' => 'Jobs',
+  'LBL_JOBNUMBER' => 'Job Number',
+  'LBL_WORKLOG' => 'Work Log',
+  'LBL_ACCOUNT_ACCOUNT_ID' => 'Account (related Account ID)',
+  'LBL_ACCOUNT' => 'Account',
+  'LBL_DEPARTMENT' => 'Department',
+  'LBL_DESCRIPTION' => 'Description:',
+  'LBL_TASK_INFORMATION' => 'TASK Overview',
+  'LBL_TYPE' => 'Type',
+  'LBL_DUE_DATE' => 'Due Date/Time',
+  'LBL_SUBJECT' => 'Subject:',
+  'LBL_PRIORITY' => 'Priority:',
+  'LBL_PANEL_ASSIGNMENT' => 'Audit',
+  'LBL_LIST_RELATED_TO' => 'Case Related to',
+  'LBL_EDITVIEW_PANEL1' => 'Tech Dispatch Info',
+  'LBL_DOCKHELIPORTLOCATION' => 'Dock / Heliport Location',
+  'LBL_VESSELNAME' => 'Vessel Name',
+  'LBL_CONTACTNAME' => 'Contact Name',
+  'LBL_CONTACTNUMBER' => 'Contact Number',
+  'LBL_PARTSSPARESNEEDED' => 'Parts / Spares Needed',
+  'LBL_FWT' => 'Fieldwork Ticket',
+  'LBL_DATE_STOP' => 'Stop Date/Time',
+  'LBL_START_DATE' => 'Start Date/Time',
+  'LBL_STATUS' => 'Status:',
 );

@@ -93,7 +93,11 @@ array (
         ),
         2 => 
         array (
-          0 => '',
+          0 => 
+          array (
+            'name' => 'parent_name',
+            'label' => 'LBL_LIST_RELATED_TO',
+          ),
           1 => 
           array (
             'name' => 'assigned_user_name',
@@ -102,34 +106,15 @@ array (
         ),
         3 => 
         array (
-          0 => '',
-          1 => 
-          array (
-            'name' => 'priority',
-            'displayParams' => 
-            array (
-              'required' => true,
-            ),
-          ),
-        ),
-        4 => 
-        array (
-          0 => '',
-          1 => 
-          array (
-            'name' => 'status',
-            'displayParams' => 
-            array (
-              'required' => true,
-            ),
-          ),
-        ),
-        5 => 
-        array (
           0 => 
           array (
-            'name' => 'parent_name',
-            'label' => 'LBL_LIST_RELATED_TO',
+            'name' => 'date_start',
+            'type' => 'datetimecombo',
+            'displayParams' => 
+            array (
+              'showNoneCheckbox' => true,
+              'showFormats' => true,
+            ),
           ),
           1 => 
           array (
@@ -142,29 +127,52 @@ array (
             ),
           ),
         ),
-        6 => 
+        4 => 
+        array (
+          0 => 
+          array (
+            'name' => 'date_stop_c',
+            'label' => 'LBL_DATE_STOP',
+          ),
+          1 => 
+          array (
+            'name' => 'priority',
+            'displayParams' => 
+            array (
+              'required' => true,
+            ),
+          ),
+        ),
+        5 => 
         array (
           0 => '',
           1 => 
           array (
-            'name' => 'date_start',
-            'type' => 'datetimecombo',
+            'name' => 'status',
             'displayParams' => 
             array (
-              'showNoneCheckbox' => true,
-              'showFormats' => true,
+              'required' => true,
             ),
           ),
         ),
-        7 => 
+        6 => 
         array (
-          0 => '',
-          1 => 
+          0 => 
           array (
             'name' => 'type_c',
             'studio' => 'visible',
             'label' => 'LBL_TYPE',
           ),
+          1 => 
+          array (
+            'name' => 'fwt_c',
+            'label' => 'LBL_FWT',
+          ),
+        ),
+        7 => 
+        array (
+          0 => '',
+          1 => '',
         ),
         8 => 
         array (
