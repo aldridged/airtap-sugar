@@ -228,7 +228,7 @@ function generateComposeDataPackage($data,$forFullCompose = TRUE, $bean = null)
 		} // else
 		$ret = array(
 		'to_email_addrs' => $return['to'],
-		'cc_addrs'       => "support@airtap.com",
+		'cc_addrs'       => "support@tampnet.com",
 		'parent_type'	 => $return['parent_type'],
 		'parent_id'	     => $return['parent_id'],
 		'parent_name'    => $return['parent_name'],
