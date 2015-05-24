@@ -142,9 +142,23 @@ if (!isset($GLOBALS['check_notify'])) {
 //$admin = new Administration();
 //$admin->retrieveSettings();
 
-// Save without standard email notification
-$focus->save(false);
-$return_id = $focus->id;
+// Save without standard email notification only if Field Engineer
+if(trim($focus->department_c)!="FieldTech") {
+	// Save using standard notification procedure
+	$focus->save(true);
+	$return_id = $focus->id;
+	if(!empty($_POST['is_ajax_call']))
+	{
+        $json = getJSONobj();
+        echo $json->encode(array('status' => 'success', 'get' => ''));
+        exit;
+	}
+	handleRedirect($return_id,'Tasks');
+} else {
+
+  // Save without standard email notification
+  $focus->save(false);
+  $return_id = $focus->id;
 
 /*
 // Get user to notify
@@ -190,12 +204,13 @@ header("Location: index.php?&module=Emails&action=Compose&replyForward=true&reco
 exit();
 */
 
-if(!empty($_POST['is_ajax_call']))
-{
+  if(!empty($_POST['is_ajax_call']))
+  {
 	$json = getJSONobj();
 	echo $json->encode(array('status' => 'success', 'get' => ''));
 	exit;
-}
+  }
 
-handleRedirect($return_id,'Email');
+  handleRedirect($return_id,'Email');
+}
 ?>
